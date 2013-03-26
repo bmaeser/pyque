@@ -25,8 +25,8 @@ or checkout from github: ::
     $ python setup.py install
 
 Contribute
-
 ------------------
+
 contributions welcome
 
 pull-request please and/or create a issue on github
