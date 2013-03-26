@@ -11,18 +11,18 @@ Installation
 ------------
 
 with pip: ::
-	
-	$ pip install pyque
+    
+    $ pip install pyque
 
 or: ::
-	
-	$ easy_install pyque
+    
+    $ easy_install pyque
 
 or checkout from github: ::
 
-	$ git clone https://github.com/bmaeser/pyque.git
-	$ cd pyque
-	$ python setup.py install
+    $ git clone https://github.com/bmaeser/pyque.git
+    $ cd pyque
+    $ python setup.py install
 
 Contribute
 
