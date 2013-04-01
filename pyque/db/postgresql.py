@@ -6,7 +6,7 @@ from datetime import datetime
 from pyque.utils import sh
 
 def pg_dump(filename, dbname, username=None, password=None, host=None,
-    port=None, socket=None, tempdir='/tmp', pg_dump_path='pg_dump'):
+    port=None, tempdir='/tmp', pg_dump_path='pg_dump', format='p'):
     """Performs a pg_dump in 'custom' format (-Fc), which is suitable for
     pg_restore.
 
@@ -15,12 +15,13 @@ def pg_dump(filename, dbname, username=None, password=None, host=None,
 
     By default pg_dump connects to the value given in the PGHOST environment
     variable.
-    You can either specify "hostname" and "port", or give a unix-socket in
-    "socket".
+    You can either specify "hostname" and "port" or a socket path.
 
     pg_dump expects the pg_dump-utility to be on $PATCH.
     Should that not be case you are allowed to specify a custom location with
     "pg_dump_path"
+
+    Format is p (plain / default), c = custom, d = directory, t=tar
 
     """
 
@@ -30,13 +31,26 @@ def pg_dump(filename, dbname, username=None, password=None, host=None,
 
     filepath = os.path.join(tempdir, filename)
 
-    command = 
+    command = pg_dump_path
+    command += ' --format %s' % format
+    command += ' --file ' + os.path.join(tempdir, filename)
 
-    print command
-    ## backup happens here
-    retcode, output = sh('ls -la')
+    if username:
+        command += ' --username %s' % username
+    if host:
+        command += ' --host %s' % host
+    if port:
+        command += ' --port %s' % port
 
+    command += ' ' + dbname
 
+    ## export pgpasswd
+    if password:
+        os.environ["PGPASSWORD"] = password
+
+    retcode, output = sh(command)
+
+    statusdict['cmd'] = command
     statusdict['endtime'] = datetime.utcnow()
     statusdict['filepath'] = filepath
     statusdict['filesize'] = os.path.getsize(filepath)
