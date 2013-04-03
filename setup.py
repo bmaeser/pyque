@@ -20,7 +20,7 @@ setup(
     url='https://github.com/bmaeser/pyque',
     license="MIT",
     #scripts=['bin/dlvr'],
-    description="Backup and helper-utils for fabric",
+    description="pythonic devops toolbelt",
     long_description=open('README.rst').read(),
     packages = packages,
     include_package_data=True,

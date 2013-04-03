@@ -59,3 +59,4 @@ def pg_dump(filename, dbname, username=None, password=None, host=None,
 
     #return statusdict
     return statusdict
+
