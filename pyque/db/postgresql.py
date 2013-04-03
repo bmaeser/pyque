@@ -7,8 +7,7 @@ from pyque.utils import sh
 
 def pg_dump(filename, dbname, username=None, password=None, host=None,
     port=None, tempdir='/tmp', pg_dump_path='pg_dump', format='p'):
-    """Performs a pg_dump in 'custom' format (-Fc), which is suitable for
-    pg_restore.
+    """Performs a pg_dump backup.
 
     It runs with the current systemuser's privileges, unless you specify
     username and password.
@@ -25,38 +24,49 @@ def pg_dump(filename, dbname, username=None, password=None, host=None,
 
     """
 
+
     
-    statusdict = {}    
-    statusdict['starttime'] = datetime.utcnow()
+    infodict = {}
+    anyerror = False
+
+    infodict['starttime'] = datetime.now()
 
     filepath = os.path.join(tempdir, filename)
 
-    command = pg_dump_path
-    command += ' --format %s' % format
-    command += ' --file ' + os.path.join(tempdir, filename)
+    cmd = pg_dump_path
+    cmd += ' --format %s' % format
+    cmd += ' --file ' + os.path.join(tempdir, filename)
 
     if username:
-        command += ' --username %s' % username
+        cmd += ' --username %s' % username
     if host:
-        command += ' --host %s' % host
+        cmd += ' --host %s' % host
     if port:
-        command += ' --port %s' % port
+        cmd += ' --port %s' % port
 
-    command += ' ' + dbname
+    cmd += ' ' + dbname
 
     ## export pgpasswd
     if password:
         os.environ["PGPASSWORD"] = password
 
-    retcode, output = sh(command)
+    ## run pgdump
+    retcode, output = sh(cmd)
 
-    statusdict['cmd'] = command
-    statusdict['endtime'] = datetime.utcnow()
-    statusdict['filepath'] = filepath
-    statusdict['filesize'] = os.path.getsize(filepath)
-    statusdict['error'] = False if retcode == 0 else True
-    statusdict['errortext'] = None if retcode == 0 else output
+    if retcode != 0: anyerror = True
 
-    #return statusdict
-    return statusdict
+    infodict['cmd'] = cmd
+    infodict['endtime'] = datetime.now()
+    infodict['filepath'] = filepath
+
+    try:
+        infodict['filesize'] = os.path.getsize(filepath)
+    except OSError:
+        infodict['filesize'] = 0
+        anyerror = True
+
+    infodict['error'] = anyerror
+    infodict['errortext'] = None if retcode == 0 else output
+
+    return infodict
 
