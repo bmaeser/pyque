@@ -22,6 +22,9 @@ def sh(cmd):
 
 
 def gzip(filename):
+    """ Gzip a file
+    """
+
     infodict = {}
     anyerror = False
 
@@ -54,3 +57,8 @@ def gzip(filename):
         anyerror = True
 
     return infodict
+
+def rotate(filename, targetdir, versions=None, archive_dir=None):
+    """ Rotates a file.
+
+    """
