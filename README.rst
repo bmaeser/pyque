@@ -2,7 +2,7 @@
 pyque
 ======
 
-Backup and helper-utils for fabric
+pythonic devops toolbelt.
 
 EARLY ALPHA AT THE MOMENT
 
