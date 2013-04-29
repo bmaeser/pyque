@@ -30,7 +30,7 @@ or checkout from github: ::
 Example
 -------
 
-Create a gziped MySQL dump of every database on localhost for user 'backupuser':
+Create a gziped MySQL dump of every database on localhost for user 'backupuser': ::
 
     from pyque.db.mysql import db_list, db_dump
     from pyque.utils import gzip
