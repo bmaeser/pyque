@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 
 ## dependencies 
 install_requires = [
-
+    'MySQL-python==1.2.4',
 ]
 
 packages = find_packages()
@@ -19,7 +19,6 @@ setup(
     author_email='bernhard.maeser@gmail.com',
     url='https://github.com/bmaeser/pyque',
     license="MIT",
-    #scripts=['bin/dlvr'],
     description="pythonic devops toolbelt",
     long_description=open('README.rst').read(),
     packages = packages,
@@ -27,7 +26,7 @@ setup(
     install_requires = install_requires,
     zip_safe=False,
     classifiers=(
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         'Topic :: Utilities',
         'Topic :: System :: Archiving :: Backup',
         'Topic :: System :: Systems Administration',
