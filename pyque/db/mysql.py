@@ -3,10 +3,12 @@
 import os
 from datetime import datetime
 
+import MySQLdb
+
 from pyque.utils import sh
 
 
-def dump(filename, dbname, username=None, password=None, host=None,
+def db_dump(filename, dbname, username=None, password=None, host=None,
     port=None, tempdir='/tmp', mysqldump_path='mysqldump'):
     """Perfoms a mysqldump backup.
     Create a database dump for the given database.
@@ -53,5 +55,33 @@ def dump(filename, dbname, username=None, password=None, host=None,
 
     return infodict
 
-def dblist(username=None, password=None, host=None, port=None):
-    pass
+def _cursor(username=None, password=None, host=None, port=None):
+
+    c_opts = {}
+
+    if username: c_opts['user'] = username
+    if password: c_opts['passwd'] = password
+    if host: c_opts['host'] = host
+    if port: c_opts['port'] = port
+
+    dbc = MySQLdb.connect(**c_opts)
+    dbc.autocommit(True)
+    cur = dbc.cursor()
+    return cur
+
+def db_list(username=None, password=None, host=None, port=None):
+    "returns a list of all databases on this server"
+    
+    cur = _cursor(username=username, password=password, host=host, port=port)
+    cur.execute('SHOW DATABASES')
+    rows = cur.fetchall()
+
+    result = []
+    for row in rows:
+        result.append(row[0])
+
+    return result
+
+
+
+
