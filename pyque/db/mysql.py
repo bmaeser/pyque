@@ -6,7 +6,7 @@ from datetime import datetime
 from pyque.utils import sh
 
 
-def mysqldump(filename, dbname, username=None, password=None, host=None,
+def dump(filename, dbname, username=None, password=None, host=None,
     port=None, tempdir='/tmp', mysqldump_path='mysqldump'):
     """Perfoms a mysqldump backup.
     Create a database dump for the given database.
@@ -52,3 +52,6 @@ def mysqldump(filename, dbname, username=None, password=None, host=None,
     infodict['errortext'] = None if retcode == 0 else output
 
     return infodict
+
+def dblist(username=None, password=None, host=None, port=None):
+    pass

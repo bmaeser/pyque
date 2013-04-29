@@ -5,7 +5,7 @@ from datetime import datetime
 
 from pyque.utils import sh
 
-def pg_dump(filename, dbname, username=None, password=None, host=None,
+def dump(filename, dbname, username=None, password=None, host=None,
     port=None, tempdir='/tmp', pg_dump_path='pg_dump', format='p'):
     """Performs a pg_dump backup.
 
