@@ -56,6 +56,7 @@ def db_dump(filename, dbname, username=None, password=None, host=None,
     return infodict
 
 def _cursor(username=None, password=None, host=None, port=None):
+    "returns a connected cursor to the database-server."
 
     c_opts = {}
 
@@ -71,7 +72,7 @@ def _cursor(username=None, password=None, host=None, port=None):
 
 def db_list(username=None, password=None, host=None, port=None):
     "returns a list of all databases on this server"
-    
+
     cur = _cursor(username=username, password=password, host=host, port=port)
     cur.execute('SHOW DATABASES')
     rows = cur.fetchall()

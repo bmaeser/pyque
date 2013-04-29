@@ -8,6 +8,7 @@ EARLY ALPHA AT THE MOMENT
 
 API MIGHT CHANGE UNTIL V 1.0
 
+------------
 Installation
 ------------
 
@@ -25,16 +26,34 @@ or checkout from github: ::
     $ cd pyque
     $ python setup.py install
 
+-------
+Example
+-------
+
+Create a gziped MySQL dump of every database on localhost for user 'backupuser':
+
+	from pyque.db.mysql import db_list, db_dump
+	from pyque.utils import gzip
+
+	username = 'backupuser'
+	password = 'test'
+
+	for db in db_list(username = username, password=password):
+    dumpfilename = '/tmp/' + db + '.sql'
+    db_dump(dumpfilename, dbname=db, username=username, password=password)
+    gzip(dumpfilename)
+
+----------
 Contribute
-------------------
+----------
 
 contributions welcome
 
 pull-request please and/or create a issue on github
 
-
+-------
 LICENCE
-------------
+-------
 
 The MIT License (MIT)
 Copyright © 2013 Bernhard Mäser, http://bmaeser.io
