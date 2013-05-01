@@ -23,40 +23,15 @@ def sh(cmd):
 
 def gzip(filename):
     """ Gzip a file
+    returns a 3-tuble with returncode (integer), terminal output (string)
+    and the new filename.
     """
-
-    infodict = {}
-    anyerror = False
-
-    infodict['starttime'] = datetime.now()
-
-    try:
-        infodict['original_filesize'] = os.path.getsize(filename)
-    except OSError:
-        infodict['original_filesize'] = 0
-        anyerror = True
 
     ## run gzip
     retcode, output = sh('gzip %s' % filename)
-    
-    if retcode != 0: anyerror = True
-
-    infodict['error'] = anyerror
-    infodict['errortext'] = None if retcode == 0 else output
-
     new_filename = filename+'.gz'
-    
 
-    infodict['new_filename'] = new_filename
-    infodict['endtime'] = datetime.now()
-
-    try:
-        infodict['new_filesize'] = os.path.getsize(new_filename)
-    except OSError:
-        infodict['new_filesize'] = 0
-        anyerror = True
-
-    return infodict
+    return (retcode, output, new_filename)
 
 def chown(path, uid, guid, recursive=True):
     """ alternative to os.chown.
@@ -64,7 +39,7 @@ def chown(path, uid, guid, recursive=True):
         example:
             chown('/tmp/test/', bob, bob)
 
-        returns exitcode and terminal output
+        returns 2-tuple: exitcode and terminal output
     """
 
     if recursive:
@@ -78,5 +53,10 @@ def chmod(path, mode, recursive=True):
     """ alternative to os.
     """
 
+    if recursive:
+        cmd = 'chmod -R %s %s' % (mode, path)
+    else:
+        cmd = 'chmod %s %s' % (mode, path)
 
+    return sh(cmd)
 

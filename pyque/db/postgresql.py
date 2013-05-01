@@ -22,14 +22,9 @@ def dump(filename, dbname, username=None, password=None, host=None,
 
     Format is p (plain / default), c = custom, d = directory, t=tar
 
+    returns statuscode and shelloutput
+
     """
-
-
-    
-    infodict = {}
-    anyerror = False
-
-    infodict['starttime'] = datetime.now()
 
     filepath = os.path.join(tempdir, filename)
 
@@ -51,22 +46,5 @@ def dump(filename, dbname, username=None, password=None, host=None,
         os.environ["PGPASSWORD"] = password
 
     ## run pgdump
-    retcode, output = sh(cmd)
-
-    if retcode != 0: anyerror = True
-
-    infodict['cmd'] = cmd
-    infodict['endtime'] = datetime.now()
-    infodict['filepath'] = filepath
-
-    try:
-        infodict['filesize'] = os.path.getsize(filepath)
-    except OSError:
-        infodict['filesize'] = 0
-        anyerror = True
-
-    infodict['error'] = anyerror
-    infodict['errortext'] = None if retcode == 0 else output
-
-    return infodict
+    return sh(cmd)
 

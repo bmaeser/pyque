@@ -12,12 +12,8 @@ def db_dump(filename, dbname, username=None, password=None, host=None,
     port=None, tempdir='/tmp', mysqldump_path='mysqldump'):
     """Perfoms a mysqldump backup.
     Create a database dump for the given database.
+    returns statuscode and shelloutput
     """
-
-    infodict = {}
-    anyerror = False
-
-    infodict['starttime'] = datetime.now()
 
     filepath = os.path.join(tempdir, filename)
 
@@ -36,24 +32,7 @@ def db_dump(filename, dbname, username=None, password=None, host=None,
     cmd += ' ' + dbname
 
     ## run mysqldump
-    retcode, output = sh(cmd)
-
-    if retcode != 0: anyerror = True
-
-    infodict['cmd'] = cmd
-    infodict['endtime'] = datetime.now()
-    infodict['filepath'] = filepath
-
-    try:
-        infodict['filesize'] = os.path.getsize(filepath)
-    except OSError:
-        infodict['filesize'] = 0
-        anyerror = True
-        
-    infodict['error'] = anyerror
-    infodict['errortext'] = None if retcode == 0 else output
-
-    return infodict
+    return sh(cmd)
 
 def _cursor(username=None, password=None, host=None, port=None):
     "returns a connected cursor to the database-server."
