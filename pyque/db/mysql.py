@@ -5,7 +5,7 @@ from datetime import datetime
 
 import MySQLdb
 
-from pyque.utils import sh
+from pyque.sh import sh
 
 
 def db_dump(filename, dbname, username=None, password=None, host=None,

@@ -3,7 +3,7 @@
 import os
 from datetime import datetime
 
-from pyque.utils import sh
+from pyque.sh import sh
 
 def dump(filename, dbname, username=None, password=None, host=None,
     port=None, tempdir='/tmp', pg_dump_path='pg_dump', format='p'):
