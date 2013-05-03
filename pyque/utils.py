@@ -20,28 +20,46 @@ def rotate(filename, targetdir, max_versions=None, archive_dir=None):
         archive_dir
 
     """
-    now = datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
+    dtimeformat = '%Y-%m-%d-%H:%M:%S'
+
+    now = datetime.now().strftime(dtimeformat)
     old_path, old_filename = os.path.split(filename)
 
     new_filename = now +'-'+ old_filename
     new_filepath = os.path.join(targetdir, new_filename)
 
     if max_versions:
-        old_files = []
+        # find all files with same pattern that already exist in targetdir
+        old_files = {}
         for file in os.listdir(targetdir):
-            pattern = re.compile('^\d{4}-\d{2}-\d{2}-\d{2}:\d{2}:\d{2}-%s'
+            pattern = re.compile(
+                '^(?P<date>\d{4}-\d{2}-\d{2}-\d{2}:\d{2}:\d{2})-%s'
                 % old_filename)
             if pattern.match(file):
-                old_files.append(file)
+                d = re.search(pattern, file).group('date')
+                old_files[d] = file
 
-        old_files.sort() ## WIP HERE!
+        delkeys = old_files.keys()
+        # sort delkeys by date, newest first
+        delkeys.sort(key=lambda x: datetime.strptime(x, dtimeformat),
+            reverse=True)
+        
+        # delete all keys, that should not be deleted
+        del delkeys[0 : max_versions -1]
+        
+        # delete all not needed files
+        for k in delkeys:
+            fname = old_files[k]
+            fpath = os.path.join(targetdir, fname)
 
-        print old_files
-        # get list of existing files
+            if archive_dir:
+                shutil.move(fpath, os.path.join(archive_dir, fname))
+            else:
+                os.remove(fpath)
+
+
         shutil.move(filename, new_filepath)
-        # move file
 
-        # delete or archive old ones
         pass
     else:
         shutil.move(filename, new_filepath)
