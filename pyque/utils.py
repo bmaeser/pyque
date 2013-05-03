@@ -10,7 +10,7 @@ from datetime import datetime
 
 def rotate(filename, targetdir, max_versions=None, archive_dir=None):
     """ Rotates a file.
-        moves original file.ext to targetdir/YYYY-MM-DD-THH:MM:SS-file.ext
+        moves original file.ext to targetdir/file-YYYY-MM-DD-THH:MM:SS.ext
 
         deletes all older files matching the same pattern in targetdir that 
         exceed the amount of max_versions.
@@ -24,8 +24,9 @@ def rotate(filename, targetdir, max_versions=None, archive_dir=None):
 
     now = datetime.now().strftime(dtimeformat)
     old_path, old_filename = os.path.split(filename)
+    fileroot, ext = old_filename.split(os.extsep, 1)
 
-    new_filename = now +'-'+ old_filename
+    new_filename = fileroot + '-' + now + '.' + ext
     new_filepath = os.path.join(targetdir, new_filename)
 
     if max_versions:
@@ -33,8 +34,8 @@ def rotate(filename, targetdir, max_versions=None, archive_dir=None):
         old_files = {}
         for file in os.listdir(targetdir):
             pattern = re.compile(
-                '^(?P<date>\d{4}-\d{2}-\d{2}-\d{2}:\d{2}:\d{2})-%s'
-                % old_filename)
+                '^%s-(?P<date>\d{4}-\d{2}-\d{2}-\d{2}:\d{2}:\d{2}).%s'
+                % (fileroot, ext))
             if pattern.match(file):
                 d = re.search(pattern, file).group('date')
                 old_files[d] = file
@@ -65,4 +66,3 @@ def rotate(filename, targetdir, max_versions=None, archive_dir=None):
         shutil.move(filename, new_filepath)
 
     return True
-    
