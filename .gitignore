@@ -8,5 +8,5 @@ test.py
 fabfile.py
 /testdata*
 testfile*
-
+.gitignore
 examples/*
