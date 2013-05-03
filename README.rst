@@ -4,9 +4,10 @@ pyque
 
 pythonic devops toolbelt.
 
-EARLY ALPHA AT THE MOMENT
+consider this beta.
+its dogfed and somehow tested, but shipped without warranty
 
-API MIGHT CHANGE UNTIL V 1.0
+API MIGHT CHANGE UNTIL V 1.0 (yes i am serious)
 
 ------------
 Installation

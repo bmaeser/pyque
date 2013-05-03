@@ -26,7 +26,7 @@ setup(
     install_requires = install_requires,
     zip_safe=False,
     classifiers=(
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Topic :: Utilities',
         'Topic :: System :: Archiving :: Backup',
         'Topic :: System :: Systems Administration',
