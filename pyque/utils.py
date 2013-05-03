@@ -64,8 +64,5 @@ def rotate(filename, targetdir, max_versions=None, archive_dir=None):
     else:
         shutil.move(filename, new_filepath)
 
-    # print old_path
-    # print old_filename
-    # print new_filename
-
     return True
+    
