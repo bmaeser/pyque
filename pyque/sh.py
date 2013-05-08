@@ -24,8 +24,6 @@ def sh(cmd, escape=True):
     if escape:
         cmd = quote(cmd)
 
-    print cmd
-
     process = Popen(cmd, stdout=PIPE, stderr=STDOUT, shell=True)
     output, unused_err = process.communicate()
     retcode = process.poll()
