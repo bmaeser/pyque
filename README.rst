@@ -10,6 +10,19 @@ its dogfed and somehow tested, but shipped without warranty
 API MIGHT CHANGE UNTIL V 1.0 (yes i am serious)
 
 ------------
+Requirements
+------------
+
+for MySQL support:
+
+- MySQL-python>=1.2.4
+- mysqldump
+
+for PostgreSQL support:
+- psycopg2>=2.5
+- pg_dump
+
+------------
 Installation
 ------------
 

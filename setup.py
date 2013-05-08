@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 
 ## dependencies 
 install_requires = [
-    'MySQL-python==1.2.4',
+
 ]
 
 packages = find_packages()
