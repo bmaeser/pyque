@@ -4,15 +4,27 @@ import os
 from datetime import datetime
 from subprocess import Popen, PIPE, STDOUT
 
+def quote(s):
+    """ Return a shell escaped version of a string
+    """
+    return '"%s"' % (s.replace('\\', '\\\\')
+        .replace('"', '\"')
+        .replace('$', '\$')
+        .replace('`', '\`')
+        )
 
 
-def sh(cmd):
+def sh(cmd, escape=True):
     """ Executes the given command.
     returns a 2-tuple with returncode (integer) and OUTPUT (string)
     """
 
     # we mimic subprocess.check_output from python 2.7
     # to stay compatible with python 2.5+
+    if escape:
+        cmd = quote(cmd)
+
+    print cmd
 
     process = Popen(cmd, stdout=PIPE, stderr=STDOUT, shell=True)
     output, unused_err = process.communicate()
