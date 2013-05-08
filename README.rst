@@ -19,6 +19,7 @@ for MySQL support:
 - mysqldump
 
 for PostgreSQL support:
+
 - psycopg2>=2.5
 - pg_dump
 
