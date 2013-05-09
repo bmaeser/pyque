@@ -50,7 +50,7 @@ chmod backup to 400 and rotate it away and keep 7 versions of this backup: ::
 
     import os
 
-    from pyque.db.mysql import db_list, db_dump
+    from pyque.db.mysql import db_list, dump
     from pyque.sh import gzip, chmod
     from pyque.utils import rotate
 
@@ -58,10 +58,13 @@ chmod backup to 400 and rotate it away and keep 7 versions of this backup: ::
     password = 'test'
     tmppath = '/tmp'
     backupdir = '/tmp/backups'
+    excludes = ['performance_schema', 'information_schema']
 
     for db in db_list(username = username, password=password):
+        if db in excludes:
+            continue
         dumpfilename = os.path.join(tmppath,db) + '.sql'
-        db_dump(dumpfilename, dbname=db, username=username, password=password)
+        dump(dumpfilename, dbname=db, username=username, password=password)
         retcode, output, newfilepath = gzip(dumpfilename)
         chmod(newfilepath, '400')
         rotate(newfilepath, backupdir, max_versions=7)
