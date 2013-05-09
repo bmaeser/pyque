@@ -52,7 +52,7 @@ def dump(filename, dbname, username=None, password=None, host=None,
     return sh(cmd)
 
 
-def _cursor(username=None, password=None, host=None, port=None, db=None):
+def _connection(username=None, password=None, host=None, port=None, db=None):
     "returns a connected cursor to the database-server."
 
     c_opts = {}
@@ -64,23 +64,24 @@ def _cursor(username=None, password=None, host=None, port=None, db=None):
 
     dbc = psycopg2.connect(**c_opts)
     dbc.autocommit = True
-    cur = dbc.cursor()
-
-    return cur
+    return dbc
 
 def db_list(username=None, password=None, host=None, port=None,
         maintain_db='postgres'):
     "returns a list of all databases on this server"
 
-    cur = _cursor(username=username, password=password, host=host, port=port,
-        db=maintain_db)
+    conn = _connection(username=username, password=password, host=host,
+        port=port, db=maintain_db)
+
+    cur = conn.cursor()
 
     cur.execute('SELECT DATNAME from pg_database')
     rows = cur.fetchall()
+
+    conn.close()
 
     result = []
     for row in rows:
         result.append(row[0])
 
     return result
-    
