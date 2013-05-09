@@ -33,7 +33,7 @@ def sh(cmd, escape=True):
 
 def gzip(filename):
     """ Gzip a file
-    returns a 3-tuble with returncode (integer), terminal output (string)
+    returns a 3-tuple with returncode (integer), terminal output (string)
     and the new filename.
     """
 
