@@ -7,7 +7,7 @@ from subprocess import Popen, PIPE, STDOUT
 def quote(s):
     """ Return a shell escaped version of a string
     """
-    return '"%s"' % (s.replace('\\', '\\\\')
+    return '%s' % (s.replace('\\', '\\\\')
         .replace('"', '\"')
         .replace('$', '\$')
         .replace('`', '\`')
@@ -19,8 +19,6 @@ def sh(cmd, escape=True):
     returns a 2-tuple with returncode (integer) and OUTPUT (string)
     """
 
-    # we mimic subprocess.check_output from python 2.7
-    # to stay compatible with python 2.5+
     if escape:
         cmd = quote(cmd)
 
