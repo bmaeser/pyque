@@ -8,7 +8,7 @@ import MySQLdb
 from pyque.sh import sh
 
 
-def db_dump(filename, dbname, username=None, password=None, host=None,
+def dump(filename, dbname, username=None, password=None, host=None,
     port=None, tempdir='/tmp', mysqldump_path='mysqldump'):
     """Perfoms a mysqldump backup.
     Create a database dump for the given database.
@@ -34,7 +34,7 @@ def db_dump(filename, dbname, username=None, password=None, host=None,
     ## run mysqldump
     return sh(cmd)
 
-def _cursor(username=None, password=None, host=None, port=None):
+def _connection(username=None, password=None, host=None, port=None):
     "returns a connected cursor to the database-server."
 
     c_opts = {}
@@ -46,15 +46,19 @@ def _cursor(username=None, password=None, host=None, port=None):
 
     dbc = MySQLdb.connect(**c_opts)
     dbc.autocommit(True)
-    cur = dbc.cursor()
-    return cur
+    return dbc
 
 def db_list(username=None, password=None, host=None, port=None):
     "returns a list of all databases on this server"
 
-    cur = _cursor(username=username, password=password, host=host, port=port)
+    conn = _connection(username=username, password=password, host=host, port=port)
+
+    cur = conn.cursor()
+    
     cur.execute('SHOW DATABASES')
     rows = cur.fetchall()
+
+    conn.close()
 
     result = []
     for row in rows:
