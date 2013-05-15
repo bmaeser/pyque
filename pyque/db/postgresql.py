@@ -61,7 +61,7 @@ def _connection(username=None, password=None, host=None, port=None, db=None):
     if password: c_opts['password'] = password
     if host: c_opts['host'] = host
     if port: c_opts['port'] = port
-    if db: c_opts['dbname'] = db
+    if db: c_opts['database'] = db
 
     dbc = psycopg2.connect(**c_opts)
     dbc.autocommit = True
