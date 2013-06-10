@@ -41,6 +41,28 @@ def gzip(filename):
 
     return (retcode, output, new_filename)
 
+def tar(filename, dirs=[], gzip=False):
+    """ Create a tar-file or a tar.gz at location: filename.
+    params:
+        gzip: if True - gzip the file, default = False
+        dirs: dirs to be tared
+    returns a 3-tuple with returncode (integer), terminal output (string)
+    and the new filename.
+    """
+    if gzip:
+        cmd = 'tar czvf %s ' % filename
+    else:
+        cmd = 'tar cvf %s ' % filename
+
+    if type(dirs) != 'list':
+        dirs = [dirs]
+
+    cmd += ' '.join(str(x) for x in dirs)
+
+    retcode, output = sh(cmd)
+
+    return (retcode, output, filename)
+
 def chown(path, uid, guid, recursive=True):
     """ alternative to os.chown.
         wraps around unix chown
